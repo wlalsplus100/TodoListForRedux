@@ -1,15 +1,19 @@
 interface Todo {
-  name?: string;
-  clear?: boolean;
-  id?: string;
+  id: string;
+  text: string;
+  state: boolean;
 }
 
 interface TodoItemType {
-  name?: string;
-  clear?: boolean;
   id?: string;
+  text?: string;
+  state?: boolean;
   todos: Array<Todo>;
   setTodos: React.Dispatch<React.SetStateAction<Array<Todo> | null>>;
 }
 
-export type { Todo, TodoItemType };
+interface RootState {
+  todos: Todo[];
+}
+
+export type { Todo, TodoItemType, RootState };

@@ -1,32 +1,30 @@
-import React from "react";
-import { useState } from "react";
 import styled from "styled-components";
+import { useMemo } from "react";
 import AddContainer from "./AddContainer";
-import { Todo } from "../modules/types/type";
+import { useSelector } from "react-redux";
+import { RootState, Todo } from "../modules/types/type";
 import TodoItem from "./TodoItem";
+import { createSelector } from "@reduxjs/toolkit";
 
 const Background = () => {
-  const [todo, setTodo] = useState<Array<Todo> | null>(null);
+  const selectTodos = (state: RootState) => state.todos;
 
-  const renderTodo = () => {
-    return todo?.map((e) => {
-      return (
-        <TodoItem
-          name={e.name}
-          clear={e.clear}
-          id={e.id}
-          todos={todo}
-          setTodos={setTodo}
-        />
-      );
-    });
-  };
+  const selectTodoIds = createSelector(
+    [selectTodos],
+    (todos) => (todos && todos.map((t: Todo) => t.id.toString())) || []
+  );
+
+  const todoIds = useSelector(selectTodoIds);
 
   return (
     <Container>
       <Header>To Do List</Header>
-      <AddContainer todo={todo} setTodo={setTodo} />
-      <TodoSection>{renderTodo()}</TodoSection>
+      <AddContainer />
+      <TodoSection>
+        {todoIds.map((id) => (
+          <TodoItem todoId={id} key={id}></TodoItem>
+        ))}
+      </TodoSection>
     </Container>
   );
 };

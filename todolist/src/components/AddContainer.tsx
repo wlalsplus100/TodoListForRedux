@@ -1,34 +1,34 @@
 import styled from "styled-components";
-import { useRef } from "react";
-import { Todo } from "../modules/types/type";
+import { useState } from "react";
+import { RootState, Todo } from "../modules/types/type";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../actions/todoActions";
 
-const AddContainer = ({
-  todo,
-  setTodo,
-}: {
-  todo: Array<Todo> | null;
-  setTodo: React.Dispatch<React.SetStateAction<Array<Todo> | null>>;
-}) => {
-  const input = useRef<HTMLInputElement>(null);
+const AddContainer = () => {
+  const dispatch = useDispatch();
+  const [text, setText] = useState<string>("");
 
-  const addTodo = () => {
-    if (input.current) {
-      if (todo) {
-        setTodo([
-          ...todo,
-          { name: input.current.value, clear: false, id: `${todo.length}` },
-        ]);
-      } else {
-        setTodo([{ name: input.current.value, clear: false, id: "0" }]);
-      }
-      input.current.value = "";
+  const handleChange = ({
+    currentTarget: { value },
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setText(value);
+  };
+
+  const handleClick = () => {
+    console.log("눌림");
+    dispatch(addTodo(text));
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleClick();
     }
   };
 
   return (
     <Container>
-      <TodoInput ref={input} />
-      <AddButton onClick={addTodo}>추가</AddButton>
+      <TodoInput onChange={handleChange} onKeyDown={handleKeyPress} />
+      <AddButton onClick={handleClick}>추가</AddButton>
     </Container>
   );
 };

@@ -1,29 +1,34 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { TodoItemType } from "../modules/types/type";
+import { RootState, Todo, TodoItemType } from "../modules/types/type";
+import { useDispatch } from "react-redux";
+import { changeTodo, removeTodo } from "../actions/todoActions";
+import useRenderTodos from "./renderTodo";
 
-const TodoItem = ({ name, clear, id, todos, setTodos }: TodoItemType) => {
-  const [clearText, setClearText] = useState(clear);
+interface TodoItemProps {
+  todoId: string;
+}
 
-  const clearHandler = () => {
-    setClearText(!clearText);
+const TodoItem: React.FC<TodoItemProps> = ({ todoId }) => {
+  const dispatch = useDispatch();
+  const todo: Todo | null = useRenderTodos(todoId);
+  console.log(todo);
+
+  const handleClick = () => {
+    todo?.id && dispatch(removeTodo(todo.id));
   };
 
-  const delHender = () => {
-    setTodos(
-      todos.filter((e) => {
-        return e.id !== id;
-      })
-    );
+  const handleState = () => {
+    todo?.id && todo?.state && dispatch(changeTodo(todo.id, todo.state));
   };
 
   return (
     <Container>
-      <span>{name}</span>
-      <ClearButton onClick={clearHandler}>
-        {clearText === true ? "✅" : "❎"}
+      <span>{todo?.text}</span>
+      <ClearButton onClick={handleState}>
+        {todo?.state === true ? "✅" : "❎"}
       </ClearButton>
-      <DelButton onClick={delHender}>삭제</DelButton>
+      <DelButton onClick={handleClick}>삭제</DelButton>
     </Container>
   );
 };

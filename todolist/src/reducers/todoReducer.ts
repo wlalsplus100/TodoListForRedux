@@ -27,6 +27,8 @@ type TodoAction = AddTodoAction | RemoveTodoAction | ChangeTodoAction;
 const initState: Todo[] = [];
 
 const todoReducer = (state = initState, action: TodoAction): Todo[] => {
+  console.log("Current State:", state);
+  console.log("Action:", action);
   switch (action.type) {
     case ADD_TODO:
       const newTodo = [
@@ -41,9 +43,10 @@ const todoReducer = (state = initState, action: TodoAction): Todo[] => {
     case CHANGE_TODO:
       return state.map((todo) => {
         if (todo.id === action.payload.id) {
-          todo.state = !todo.state;
+          return { ...todo, state: !todo.state };
+        } else {
           return todo;
-        } else return todo;
+        }
       });
     default:
       return state;
