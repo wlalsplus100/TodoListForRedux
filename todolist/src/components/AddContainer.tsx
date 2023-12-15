@@ -16,9 +16,18 @@ const AddContainer = () => {
 
   const handleClick = () => {
     console.log("눌림");
-    dispatch(addTodo(text));
-    if (todoInput.current) {
-      todoInput.current.value = "";
+    if (text.trim() !== "") {
+      dispatch(addTodo(text));
+      setText("");
+      if (todoInput.current) {
+        todoInput.current.value = "";
+      }
+    } else {
+      alert("내용을 입력해주세요!");
+      setText("");
+      if (todoInput.current) {
+        todoInput.current.value = "";
+      }
     }
   };
 
@@ -43,24 +52,27 @@ const AddContainer = () => {
 const Container = styled.div`
   display: flex;
   gap: 8px;
-`;
-
-const TodoInput = styled.input`
-  border: none;
-  outline: none;
   width: 400px;
-  height: 24px;
-  font-size: 16px;
 
   @media screen and (min-width: 1024px) {
     width: 45vw;
   }
 `;
 
+const TodoInput = styled.input`
+  border: none;
+  outline: none;
+  height: 24px;
+  font-size: 16px;
+  flex-grow: 1;
+`;
+
 const AddButton = styled.button`
   background-color: #ffb700;
   border: none;
-  box-shadow: 1px 1px 3px;
+  /* box-shadow: 1px 1px 3px; */
+  transition: all 1s;
+  border-radius: 8px;
   &:hover {
     cursor: pointer;
     background-color: cyan;
