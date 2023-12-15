@@ -12,8 +12,4 @@ interface TodoItemType {
   setTodos: React.Dispatch<React.SetStateAction<Array<Todo> | null>>;
 }
 
-interface RootState {
-  todos: Todo[];
-}
-
-export type { Todo, TodoItemType, RootState };
+export type { Todo, TodoItemType };

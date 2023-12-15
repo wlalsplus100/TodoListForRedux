@@ -1,6 +1,5 @@
-import { useState } from "react";
 import styled from "styled-components";
-import { RootState, Todo, TodoItemType } from "../modules/types/type";
+import { Todo } from "../modules/types/type";
 import { useDispatch } from "react-redux";
 import { changeTodo, removeTodo } from "../actions/todoActions";
 import useRenderTodos from "./renderTodo";
@@ -12,14 +11,15 @@ interface TodoItemProps {
 const TodoItem: React.FC<TodoItemProps> = ({ todoId }) => {
   const dispatch = useDispatch();
   const todo: Todo | null = useRenderTodos(todoId);
-  console.log(todo);
 
   const handleClick = () => {
     todo?.id && dispatch(removeTodo(todo.id));
   };
 
   const handleState = () => {
-    todo?.id && todo?.state && dispatch(changeTodo(todo.id, todo.state));
+    if (todo) {
+      dispatch(changeTodo(todo.id, todo.state));
+    }
   };
 
   return (

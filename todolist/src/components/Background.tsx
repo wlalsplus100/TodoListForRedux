@@ -1,29 +1,22 @@
 import styled from "styled-components";
-import { useMemo } from "react";
 import AddContainer from "./AddContainer";
 import { useSelector } from "react-redux";
-import { RootState, Todo } from "../modules/types/type";
+import { Todo } from "../modules/types/type";
 import TodoItem from "./TodoItem";
-import { createSelector } from "@reduxjs/toolkit";
 
 const Background = () => {
-  const selectTodos = (state: RootState) => state.todos;
-
-  const selectTodoIds = createSelector(
-    [selectTodos],
-    (todos) => (todos && todos.map((t: Todo) => t.id.toString())) || []
-  );
-
-  const todoIds = useSelector(selectTodoIds);
+  const todoIds = useSelector((state: Todo[]) => state);
+  console.log("렌더링!");
 
   return (
     <Container>
       <Header>To Do List</Header>
       <AddContainer />
       <TodoSection>
-        {todoIds.map((id) => (
-          <TodoItem todoId={id} key={id}></TodoItem>
-        ))}
+        {todoIds &&
+          todoIds.map((todo) => (
+            <TodoItem todoId={todo.id} key={todo.id}></TodoItem>
+          ))}
       </TodoSection>
     </Container>
   );

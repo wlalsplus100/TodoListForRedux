@@ -31,11 +31,11 @@ const todoReducer = (state = initState, action: TodoAction): Todo[] => {
   console.log("Action:", action);
   switch (action.type) {
     case ADD_TODO:
-      const newTodo = [
-        ...state,
-        { id: uuidv4(), text: action.payload.text, state: false },
-      ];
-      return newTodo;
+      return state.concat({
+        id: uuidv4(),
+        text: action.payload.text,
+        state: false,
+      });
     case REMOVE_TODO:
       return state.filter((todo) => {
         return todo.id !== action.payload.id;
