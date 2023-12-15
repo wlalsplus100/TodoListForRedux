@@ -1,11 +1,12 @@
 import styled from "styled-components";
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../actions/todoActions";
 
 const AddContainer = () => {
   const dispatch = useDispatch();
   const [text, setText] = useState<string>("");
+  const todoInput = useRef<HTMLInputElement>(null);
 
   const handleChange = ({
     currentTarget: { value },
@@ -16,6 +17,9 @@ const AddContainer = () => {
   const handleClick = () => {
     console.log("눌림");
     dispatch(addTodo(text));
+    if (todoInput.current) {
+      todoInput.current.value = "";
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -26,7 +30,11 @@ const AddContainer = () => {
 
   return (
     <Container>
-      <TodoInput onChange={handleChange} onKeyDown={handleKeyPress} />
+      <TodoInput
+        onChange={handleChange}
+        onKeyDown={handleKeyPress}
+        ref={todoInput}
+      />
       <AddButton onClick={handleClick}>추가</AddButton>
     </Container>
   );
