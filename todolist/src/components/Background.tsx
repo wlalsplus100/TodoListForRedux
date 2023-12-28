@@ -1,32 +1,31 @@
 import styled from "styled-components";
 import AddContainer from "./AddContainer";
 import { useSelector } from "react-redux";
-import { Todo } from "../modules/types/type";
 import TodoItem from "./TodoItem";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
+import { RootState } from "../store/configureStore";
 
 const Background = () => {
-  const todoIds = useSelector((state: Todo[]) => state);
+  const todoIds = useSelector((state: RootState) => state.todo);
   const endTodo = useRef<HTMLDivElement>(null);
+  const updateTodo = useSelector((state: RootState) => state.flag);
   console.log("렌더링!");
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log(endTodo.current);
     endTodo.current?.scrollIntoView({ behavior: "smooth" });
-  }, [todoIds]);
+  }, [updateTodo]);
 
   return (
     <Container>
       <Header>To Do List</Header>
       <AddContainer />
-      <SliedContainer>
-        <SliedButton>&lt;</SliedButton>
+      <SlideContainer>
+        <SlideButton>&lt;</SlideButton>
         <ul>
           <TodoSection>
             {todoIds &&
               todoIds.map((todo, i) => {
-                console.log(todoIds.length);
-                console.log(i);
                 if (todoIds.length === i + 1) {
                   console.log("마지막 todo");
                   return (
@@ -41,8 +40,8 @@ const Background = () => {
               })}
           </TodoSection>
         </ul>
-        <SliedButton>&gt;</SliedButton>
-      </SliedContainer>
+        <SlideButton>&gt;</SlideButton>
+      </SlideContainer>
     </Container>
   );
 };
@@ -88,7 +87,7 @@ const TodoSection = styled.li`
   }
 `;
 
-const SliedContainer = styled.div`
+const SlideContainer = styled.div`
   display: flex;
   align-items: center;
   ul {
@@ -98,7 +97,7 @@ const SliedContainer = styled.div`
   }
 `;
 
-const SliedButton = styled.button`
+const SlideButton = styled.button`
   margin: 0px 30px;
   height: 36px;
   width: 36px;
