@@ -6,9 +6,10 @@ import useRenderTodos from "./renderTodo";
 
 interface TodoItemProps {
   todoId: string;
+  setRef?: React.Ref<HTMLDivElement>;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todoId }) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todoId, setRef }) => {
   const dispatch = useDispatch();
   const todo: Todo | null = useRenderTodos(todoId);
 
@@ -23,7 +24,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todoId }) => {
   };
 
   return (
-    <Container>
+    <Container ref={setRef}>
       <span>{todo?.text}</span>
       <ClearButton onClick={handleState}>
         {todo?.state === true ? "✅" : "❎"}
@@ -39,6 +40,7 @@ const Container = styled.div`
   background-color: #ffd900;
   display: flex;
   gap: 1em;
+  border: 1px solid #ffe75e;
   & > span {
     flex-basis: 300px;
     flex-grow: 1;
