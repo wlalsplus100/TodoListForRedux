@@ -41,6 +41,7 @@ const Container = styled.div`
   display: flex;
   gap: 1em;
   border: 1px solid #ffe75e;
+  height: 40px;
   & > span {
     flex-basis: 300px;
     flex-grow: 1;
@@ -61,6 +62,11 @@ const DelButton = styled.button`
   all: unset;
   background-color: #b6ff2e;
   cursor: pointer;
+  height: 22px;
+  border-radius: 10%;
+  flex-basis: 42px;
+  flex-shrink: 0;
+  text-align: center;
 `;
 
 export default TodoItem;
